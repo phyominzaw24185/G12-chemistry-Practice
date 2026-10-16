@@ -1,0 +1,655 @@
+<title>G12 Chemistry Old Questions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Nunito+Sans:wght@600;700;800&display=swap">
+<style>
+/* Same look as the G12 Biology exam app: navy striped header, light blue ground, serif question cards, big blue/red answer buttons, year pills. Single light look by design. */
+:root{
+  --bg:#EDF1FA; --card:#FFFFFF; --ink:#1B2340; --muted:#5F6B8A; --line:#D8DFF0;
+  --navy:#172044; --blue1:#3F6BEA; --blue2:#2447C8; --red1:#CF3C30; --red2:#A82A22;
+  --orange1:#F2A83B; --orange2:#D9812A; --grey:#66738F;
+  --ans-bg:#FCF0C6; --ans-bar:#E9A62A;
+  --ok:#17803F; --ok-bg:#D9F4E3; --no:#C0392B; --no-bg:#FADCD8;
+  --f-sans:'Nunito Sans','Segoe UI',system-ui,sans-serif;
+  --f-serif:'Lora',Georgia,'Times New Roman',serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-serif);font-size:15px;line-height:1.55;padding:0}
+button{font:inherit;color:inherit;cursor:pointer;border:0}
+:focus-visible{outline:3px solid var(--blue1);outline-offset:2px}
+sub,sup{line-height:0;font-size:.72em}
+.nuc{display:inline-block;white-space:nowrap}
+.nuc sub{margin-right:1px}
+.hdr{background:var(--navy);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0 14px,transparent 14px 28px);color:#fff;padding:22px 16px;font-family:var(--f-sans)}
+.hdr-in{max-width:760px;margin-inline:auto;display:flex;align-items:center;gap:14px}
+.hdr .ttl{flex:1;min-width:0}
+.hdr h1{margin:0;font-size:clamp(17px,4.6vw,22px);font-weight:800;line-height:1.25;text-transform:uppercase;letter-spacing:.01em}
+.hdr .sub1{margin:4px 0 0;font-size:13px;color:#B9C3E6;font-weight:600}
+.hbtn{background:rgba(255,255,255,.14);color:#fff;border-radius:12px;padding:9px 13px;font-family:var(--f-sans);font-weight:700;font-size:14px;flex:none}
+.page{max-width:760px;margin-inline:auto;padding:16px 16px 120px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:thin}
+.tab{flex:none;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:7px 14px;font-family:var(--f-sans);font-weight:800;font-size:13.5px;color:var(--muted)}
+.tab[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 10px}
+.cnt{font-family:var(--f-sans);font-weight:800;font-size:18px}
+.cnt small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:-2px}
+.btn{font-family:var(--f-sans);font-weight:800;font-size:15px;color:#fff;border-radius:14px;padding:11px 16px;box-shadow:0 4px 10px rgba(30,45,110,.18)}
+.btn.blue{background:linear-gradient(180deg,var(--blue1),var(--blue2))}
+.btn.red{background:linear-gradient(180deg,var(--red1),var(--red2))}
+.btn.orange{background:linear-gradient(180deg,var(--orange1),var(--orange2))}
+.btn.grey{background:var(--grey);box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.row .grow{flex:1 1 220px}
+.banner{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 16px;margin-bottom:16px;font-family:var(--f-sans);font-weight:700}
+.banner.score{border-color:var(--blue1);background:#E4EBFD}
+.banner.info{background:var(--ans-bg);border-color:#F0D88A;color:#6B5200}
+.topic{font-family:var(--f-sans);font-weight:800;font-size:12.5px;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);margin:22px 2px 10px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:18px;margin-bottom:16px;min-width:0}
+.qrow{display:flex;gap:10px;align-items:baseline}
+.qn{font-weight:700;color:var(--blue2);flex:none;font-size:16px}
+.qtxt{min-width:0;overflow-wrap:anywhere;font-size:16px}
+.sub{display:flex;gap:10px;margin-top:8px}
+.sub>span:first-child{color:var(--muted);flex:none;font-size:14px;padding-top:2px}
+.alt{margin-top:8px;color:var(--muted);font-size:15px}
+.tags{display:inline-flex;gap:6px;flex-wrap:wrap;vertical-align:middle;margin-left:4px}
+.tag{font-family:var(--f-sans);font-weight:800;font-size:12px;border-radius:999px;padding:1px 10px;border:2px solid;white-space:nowrap;line-height:1.5}
+.tag.y24{background:#FDF0B8;color:#7A5D00;border-color:#ECD26A}
+.tag.y25{background:#D6F4DF;color:#17703F;border-color:#8FDBA9}
+.tag.y26{background:#DDE8FF;color:#1F45B5;border-color:#9DB8F5}
+.tfrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tf,.opt{background:#F6F8FD;border:2px solid var(--line);border-radius:16px;padding:11px 10px;font-family:var(--f-serif);font-weight:700;font-size:16px;text-align:center}
+.tf[aria-pressed="true"],.opt[aria-pressed="true"]{border-color:var(--blue1);background:#E4EBFD}
+.tf.right,.opt.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.tf.wrong,.opt.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{display:flex;gap:12px;align-items:baseline;text-align:left;font-size:16px;font-weight:600;padding:10px 14px}
+.opt .l{font-family:var(--f-sans);font-weight:800;color:var(--muted)}
+.ans{background:var(--ans-bg);border-left:6px solid var(--ans-bar);border-radius:6px 16px 16px 6px;padding:10px 14px;margin-top:12px;min-width:0;overflow-wrap:anywhere}
+.ans.big{font-weight:700;font-size:16px}
+.ans.none{color:#7A5D00;font-family:var(--f-sans);font-weight:700;font-size:14px}
+.ans .lab{font-family:var(--f-sans);font-weight:800;font-size:12px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:4px;color:#8A6410}
+.ls{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.35;background:rgba(255,255,255,.65);border-radius:8px;padding:8px 10px;margin:8px 0;overflow-x:auto;white-space:pre}
+.tb{border-collapse:collapse;font-size:14px;width:100%;margin:8px 0}.tb td{border:1px solid #E3C875;padding:5px 8px;vertical-align:top}
+.refl{color:var(--muted);font-size:13px}
+.ans p{margin:6px 0}
+.ans ul{margin:6px 0;padding-left:22px}
+.showbtn{display:block;width:100%;margin-top:14px;font-family:var(--f-sans);font-weight:800;font-size:15px;color:#fff;border-radius:14px;padding:11px;box-shadow:0 4px 10px rgba(30,45,110,.18);background:linear-gradient(180deg,var(--blue1),var(--blue2))}
+.showbtn.hide{background:linear-gradient(180deg,var(--red1),var(--red2))}
+.sc{overflow-x:auto;max-width:100%}
+.rxn{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:8px 0;font-size:16px}
+.rxn .cap{display:block;font-family:var(--f-sans);font-size:11px;color:var(--muted)}
+.cfg{font-family:var(--f-sans);font-size:14px;line-height:1.9}
+.br{font-size:30px;font-weight:400;line-height:1}
+.lw{display:inline-grid;grid-template-areas:". t ." "l s r" ". b .";grid-template-columns:9px auto 9px;align-items:center;justify-items:center;margin-inline:2px;vertical-align:middle;font-weight:700;font-family:var(--f-sans)}
+.lw .sy{grid-area:s;padding:0 1px}
+.ds{display:flex;gap:3px}
+.ds.v{flex-direction:column}
+.ds u{width:5px;height:5px;border-radius:50%;background:var(--ink);display:block}
+.ds.t{grid-area:t}.ds.b{grid-area:b}.ds.l{grid-area:l}.ds.r{grid-area:r}
+/* chapter list */
+.chap{display:block;width:100%;text-align:left;border-radius:20px;padding:18px 20px;margin-bottom:14px;font-family:var(--f-sans);color:#fff;box-shadow:0 4px 10px rgba(30,45,110,.18)}
+.chap .k{font-weight:700;font-size:12px;opacity:.85;letter-spacing:.04em;text-transform:uppercase}
+.chap .t{font-weight:800;font-size:17px;line-height:1.25;margin-top:2px}
+.chap.on{background:linear-gradient(180deg,var(--blue1),var(--blue2))}
+.chap.off{background:#fff;color:var(--muted);border:2px dashed var(--line);box-shadow:none;cursor:default}
+.fab{position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;z-index:9}
+.fab button{width:46px;height:46px;border-radius:50%;background:var(--navy);color:#fff;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,.28)}
+</style>
+<div id="app"></div>
+<script>
+
+/* ---------- helpers ---------- */
+function fmt(s){
+  return String(s)
+    .replace(/\{(\d+)\|([A-Za-z]+)\}/g,'<span class="nuc"><sub>$1</sub>$2</span>')
+    .replace(/_\(([^)]*)\)/g,'<sub>$1</sub>')
+    .replace(/\^\(([^)]*)\)/g,'<sup>$1</sup>');
+}
+function dots(n,dir,pos){var h='';for(var i=0;i<n;i++)h+='<u></u>';return n?'<span class="ds '+dir+' '+pos+'">'+h+'</span>':'';}
+function lw(sym,t,r,b,l){return '<span class="lw">'+dots(t,'h','t')+dots(l,'v','l')+'<span class="sy">'+sym+'</span>'+dots(r,'v','r')+dots(b,'h','b')+'</span>';}
+function ion(inner,ch){return '<span class="br">[</span>'+inner+'<span class="br">]</span><sup>'+ch+'</sup>';}
+function sp(l,t){return '<div class="sub"><span>'+l+'</span><span>'+t+'</span></div>';}
+function alt(t){return '<div class="alt">◆ '+t+'</div>';}
+function A(h){return '<p>'+h+'</p>';}
+function cap(h,c){return '<span>'+h+'<span class="cap">'+c+'</span></span>';}
+
+/* ---------- Chapter 1 data ---------- */
+var TF=[
+['Electronic Structure and Energy Levels of Electrons',[
+[1,'Aufbau principle states that electrons are filled in the higher energy atomic orbitals before filling lower energy ones.','F'],
+[2,'In order to occupy the same orbital, electrons must have opposite spins.','T'],
+[3,'Two electrons with the same spin can occupy the same orbital.','F']]],
+['Valence Electrons and Octet Rule',[
+[4,'For an atom, the number of valence electrons is equal to its period number in the Periodic Table.','F'],
+[5,'Only valence electrons can take part in chemical bonding.','T'],
+[6,'The octet rule does not apply to <i>d</i>-block elements.','T'],
+[7,'The octet rule does not apply to <i>s</i>-block elements.','F']]],
+['Electronegativity, Electron Affinity and Ionisation Energy',[
+[8,'The elements with low electron affinity easily gain electrons, resulting in the formation of anions.','F'],
+[9,'The higher the value of electronegativity, the smaller is the atom’s attraction to electrons.','F'],
+[10,'The higher the value of the electronegativity, the greater is the atom’s attraction to electrons.','T'],
+[11,'The hydrogen bond is the weakest of all intermolecular forces.','F'],
+[12,'London dispersion forces are the strongest intermolecular forces.','F'],
+[13,'London dispersion forces are the strongest intermolecular forces that can be found in all substances.','F']]],
+['Ionic Bonding',[
+[14,'Ionic bonding generally occurs between reactive metals and reactive non-metals.','T'],
+[15,'The ionic compounds are always neutral.','T'],
+[16,'Na^(+) and Cl^(–) ions, have the electronic configuration of the noble gas Ne.','F'],
+[17,'In ionic compounds, the cations and anions are held together by strong electrostatic attraction.','T'],
+[18,'Unit-cell is the smallest repeating unit of a crystal lattice that shows the three dimensional pattern of the entire crystal.','T'],
+[19,'The cubic unit cell can have two types.','F'],
+[20,'Face-centred cubic unit cell is a cubic cell with an atom on each corner, and another in the centre of the cube.','F']]],
+['Covalent Bonding',[
+[21,'Many inorganic substances and millions of organic compounds have covalent bonding.','T']]],
+['Formation of Covalent Bonds',[
+[22,'A double bond is formed by sharing only one pair of electrons between two atoms.','F']]],
+['Formation of Coordinate Bonds (Dative Bonds)',[
+[23,'The formation of H_(3)O^(+) ion is an example of the formation of a dative bond.','T'],
+[24,'Lewis structure of carbon monoxide molecule consists of two covalent bond and one coordinate bond.','T']]],
+['VSEPR Model',[
+[25,'The molecular shape of the ammonia molecule, NH_(3), is tetrahedral.','F']]],
+['Giant Structures of Covalent Molecule',[
+[26,'Silicon(III) oxide is an example of a giant covalent molecule.','F']]],
+['Intermolecular Forces',[
+[27,'The electronegativity of bonded atoms and the geometry of molecules play an important role in determining their polarity.','T']]],
+['Polar and Non-polar Molecules',[
+[28,'Polar covalent bond is formed between two similar non-metal atoms.','F'],
+[29,'Any non-polar covalent bond has a zero dipole moment.','T'],
+[30,'In water molecules, hydrogens are partially positive and oxygens are partially negative.','T'],
+[31,'The total dipole moment of CO_(2) is not zero and it is a non-polar molecule.','F'],
+[32,'Carbon dioxide is a non-polar molecule and the dipole moment is not zero.','F']]],
+['Hydrogen Bonding',[
+[33,'Hydrogen bond is a special type of dipole-dipole interaction that occurs between non-polar molecules.','F'],
+[34,'The hydrogen bond is weaker than all other intermolecular forces.','F']]],
+['Metallic Bonds',[
+[35,'In a metallic bond, the valence electrons of the atoms are very loosely held, forming a common electron cloud.','T'],
+[36,'The boiling points of some metals become lower compared with the ionic compounds.','T']]]
+];
+
+var B='---------';
+var FB=[
+['Valence Electrons and Octet Rule',[
+[1,'Valence electrons are the electrons in the '+B+' shell of an atom.','outermost / valence'],
+[2,'The Lewis symbol for carbon is '+B+'.','<span class="lw"><span class="ds h t"><u></u></span><span class="ds v l"><u></u></span><span class="sy">C</span><span class="ds v r"><u></u></span><span class="ds h b"><u></u></span></span> (four single dots)&nbsp; (OR) &nbsp;a carbon with four single bonds, –C–']]],
+['Electronegativity, Electron Affinity and Ionisation Energy',[
+[3,'The higher the value of the '+B+' the greater is the atom’s attraction to electrons.','electronegativity'],
+[4,'The strength of sharing or transferring the valence electrons depends on the '+B+' of the atoms involved in the chemical bonding.','electronegativity'],
+[5,'Although the '+B+' within molecules are kept together by strong forces, the forces between molecules are weak.','atoms']]],
+['Nature of Ionic Bonding',[
+[6,'Ionic bonding depends on the difference in '+B+' between two atoms.','electronegativity'],
+[7,'In the ionic compounds, the oppositely charged ions are held together by strong '+B+'.','electrostatic force'],
+[8,'In ionic compounds, the cations and anions are held together by strong '+B+'.','electrostatic force'],
+[9,'Since electron loss always equals electron gain in an electron transfer process, '+B+' compounds are always neutral.','ionic'],
+[10,'The '+B+' chloride ions are needed to cancel the 2^(+) charge of magnesium in magnesium chloride.','two / 2']]],
+['Structure of Ionic Compounds',[
+[11,'In solid ionic compounds, their ions are held in '+B+' positions and cannot move, and hence they cannot conduct electricity.','fixed'],
+[12,'In solid ionic compounds, their ions are held in fixed positions and cannot move, and hence they cannot conduct '+B+'.','electricity'],
+[13,'Simple cubic unit cell is a cubic cell with an atom in each '+B+' of the cube.','corner'],
+[14,'The crystalline structure of an ionic solid is called a '+B+'.','crystal lattice'],
+[15,'Solid sodium chloride has a cubic structure and is formed by repeating the '+B+' cubic unit cell.','face-centred'],
+[16,'The term '+B+' is used to express the number of ions surrounding the central ion in the lattice.','coordination number']]],
+['Covalent Bonding',[
+[17,'Many inorganic substances and millions of organic compounds have '+B+' bonding.','covalent']]],
+['Lewis Structures of Molecules and Polyatomic Ions',[
+[18,'There is no '+B+' atom in CO molecule.','central']]],
+['Exception to the Octet Rule',[
+[19,'In SF_(6) molecule, the sulphur atom is surrounded by '+B+' electrons.','12 / twelve']]],
+['Formation of Coordinate Bonds (Dative Bonds)',[
+[20,B+' bond is characterised by the fact that the two shared electrons are both donated by one of the participating atoms.','Coordinate / Dative'],
+[21,'The CO molecule consists of two covalent bonds and one '+B+' bond.','coordinate / dative']]],
+['VSEPR Model',[
+[22,'The shape of bromine molecule (Br_(2)) is '+B+'.','linear'],
+[23,'The shape of CCl_(4) according to the VSEPR model is '+B+'.','tetrahedral']]],
+['Giant Structures of Covalent Molecules',[
+[24,'Diamond does not conduct electricity because it has no free moving '+B+'.','electrons'],
+[25,B+' forces exist between the layers of carbon atoms in graphite.','Weak van der Waals'],
+[26,'Fullerene, carbon nanotubes, and graphene are only '+B+' covalent molecules.','bulky'],
+[27,'Silicon(IV) oxide, SiO_(2) (silica or quartz) is an example of a '+B+' covalent molecule.','giant'],
+[28,'In SiO_(2) (quartz), oxygen atoms are formed as bridges between the '+B+' bonded silicon atoms.','tetrahedrally / covalent']]],
+['Intermolecular Forces',[
+[29,'A bond’s polarity is determined by the '+B+' of two bonded atoms.','electronegativity'],
+[30,'Dipole moment is a measure of the '+B+' of a covalent bond.','polarity']]],
+['Metallic Bonding',[
+[31,'Metals consist of giant structures of atoms that are packed closely together in a regular arrangement called a '+B+'.','lattice']]]
+];
+
+var MC=[
+['Electronic Structure and Energy Levels of Electron',[
+[1,'Which of the following orbitals will have the lowest energy?',['3<i>s</i>','2<i>s</i>','1<i>s</i>','4<i>s</i>'],'C'],
+[2,'When two electrons are in the same orbital, which property must be different for them to comply with the Pauli’s exclusion principle?',['Mass','Spin','Charge','Energy'],'B']]],
+['Type of Chemical Bonding',[
+[3,'Among van der Waals forces, London dispersion forces are the '+B+' intermolecular forces.',['weakest','strongest','medium','none of these'],'A']]],
+['Ionic Bondings',[
+[4,'Na^(+) ion has the electronic configuration of '+B+'.',['K','Ne','Mg','F'],'B']]],
+['Covalent Bonding',[
+[5,'Which solid does not contain covalent bonds?',['Gold','Diamond','Quartz','Ice'],'A']]],
+['Nature of Covalent Bonding',[
+[6,'The bond length of the single bond is the '+B+', followed by the double bond and triple bond.',['shortest','longest','strongest','weakest'],'B'],
+[7,'In the HCl molecule, there are '+B+' unshared pair electrons in the Cl atom.',['two','three','four','six'],'B'],
+[8,'In the HCl molecule, there are '+B+' unshared pair electrons on the Cl atom.',['six','four','three','five'],'C'],
+[9,'In the H_(2)O molecule, there are '+B+' unshared pairs of electrons on the O atom.',['two','three','four','six'],'A'],
+[10,'The number of bonding pairs of electrons in a BF_(3) molecule is '+B+'.',['one','two','three','four'],'C'],
+[11,B+' contains only single covalent bonds.',['Ammonia','Carbon dioxide','Nitrogen','Ethanol'],'D'],
+[12,'The substance '+B+' consists of both ionic and covalent bonds.',['NH_(3)','K_(2)SO_(4)','HCl','NaCl'],'B']]],
+['Exception to the Octet Rule',[
+[13,'In ICl_(3) molecule, there are '+B+' unshared pair electrons on the I atom.',['one','two','three','no'],'B']]],
+['VSEPR Model',[
+[14,'The geometry of electron pairs of '+B+' is triangular planar.',['H_(2)O','CO_(2)','SO_(2)','BeCl_(2)'],'C'],
+[15,'Which of the following pairs has same molecular geometry?',['CH_(4) and SF_(4)','NH_(4)^(+) and SF_(4)','CH_(4) and NH_(4)^(+)','None of these'],'C'],
+[16,'The bond angle of H–C–H is '+B+' in methane molecule.',['108°','108.9°','109°','109.5°'],'D']]],
+['Giant Structures of Covalent Molecules',[
+[17,B+' has a giant covalent structure.',['Diamond','Graphene','Fullerene','Carbon nanotube'],'D']]],
+['Polar and Non-polar Molecules',[
+[18,B+' molecule is a molecule in which one end of the molecule is slightly positive while the other end is slightly negative.',['Polar','Expanded valence shell','Non-polar','Electron-deficient'],'A'],
+[19,'The dipole moment of CO_(2) is '+B+'.',['zero','one','two','three'],'A'],
+[20,'The molecule, '+B+', contains polar bonds but is a non-polar molecule.',['H_(2)','CO_(2)','HCl','H_(2)O'],'B'],
+[21,'Which of the molecules is the most polar?',['H–F','H–Cl','H–Br','H–I'],'A']]],
+['van der Waals Forces',[
+[22,'Polar molecules such as HCl, HCN, and SO_(2) are held together by '+B+'.',['ion-dipole interactions','dipole-dipole interactions','London dispersion forces','van der Waals forces'],'B']]],
+['Hydrogen Bonding',[
+[23,'The hydrogen bond is the '+B+' intermolecular force followed by van der Waals forces.',['weakest','strongest','medium','none of these'],'B'],
+[24,B+' bonding can occur as both intermolecular and intramolecular forces.',['Ionic','Hydrogen','Metallic','Covalent'],'B']]],
+['Metallic Bonds',[
+[25,'The structure of a metallic bond is quite '+B+' from that of covalent or ionic bonds.',['different','same','equal','similar'],'A'],
+[26,'In a (an) '+B+' bond, the valence electrons of the atoms are very loosely held, forming a common electron cloud.',['metallic','covalent','coordinate','ionic'],'A'],
+[27,'The strength of metallic bond is '+B+' than that of an ionic bond.',['higher','lower','greater','more advanced'],'B']]]
+];
+
+/* Q4 answers available: 1 to 14(c) */
+/* ---------- answers added later (Q4 14(d)- , Q7) ---------- */
+function ls(t){return '<pre class="ls">'+t+'</pre>';}
+function tb(rows){return '<table class="tb">'+rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>';}).join('')+'</table>';}
+function ul(a){return '<ul>'+a.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';}
+function ref(t){return '<p class="refl">Same answer as '+t+'.</p>';}
+var BR=lw('Br',2,1,2,2),CLs=lw('Cl',2,1,2,2),MG=lw('Mg',0,2,0,0),CA=lw('Ca',0,2,0,0),FF=lw('F',2,1,2,2),OO=lw('O',2,1,2,1);
+var BRi=ion(lw('Br',2,2,2,2),'–'),CLi=ion(lw('Cl',2,2,2,2),'–'),Fi=ion(lw('F',2,2,2,2),'–');
+var HYD=ls('H₂Ö:  +  H⁺   →   [ H — Ö — H ]⁺   (H₃O⁺, hydronium ion)\nwater   hydrogen ion        |\n                            H ← coordinate bond\n\nLone pair of electrons on water; hydrogen ion has no valence electron.');
+var NB=ls('    H    :F:\n    |     |\nH — N → B — F:\n    |     |\n    H    :F:\n          ↑\n    coordinate bond');
+var NBeq=ls('H₃N:  +  BF₃   →   H₃N→BF₃\nammonia  boron      adduct\n         trifluoride');
+var HB2=ls('        δ–      δ+\n      :O::::::::H — O:\n   CH₃—C              C—CH₃\n      :O — H::::::::O:\n        δ+           δ–\n\nintermolecular hydrogen bond');
+var LEW={BF3:ls(' :F:\n  |\n:F — B — F:'),CO3:ls('[  :Ö:  ]²–\n[   ‖   ]\n[:Ö—C—Ö:]\n(2 single bonds and one double bond)')};
+var COND='<ul><li>the first molecule has hydrogen attached to a highly electronegative atom (F, O, or N) and</li><li>the second molecule possesses a lone pair of electrons on a small highly electronegative atom (F, O, or N).</li></ul>';
+var THREEF='<p>These three forces are</p>'+ul(['repulsive force between the electrons of atoms since like charges repel,','attractive force between the nucleus of each atom and the electrons of another, and','repulsive force between the two positively charged nuclei.']);
+var D14='<p><b>(d)</b></p><div class="sc"><div class="rxn">'+cap(BR,'2.8.18.7 · [Ar]4s^(2)3d^(10)4p^(5)')+' + '+cap(MG,'2.8.2 · [Ne]3s^(2)')+' + '+cap(BR,'2.8.18.7 · [Ar]4s^(2)3d^(10)4p^(5)')+' → '+cap('Mg^(2+)','2.8 · [Ne]<br>magnesium ion')+cap('2'+BRi,'2.8.18.8 · [Kr]<br>bromide ion')+'</div></div>'
+ +A('Two electrons transferred from one Mg to two Br atoms → magnesium bromide, MgBr_(2)')
+ +'<p><b>(e)</b></p><div class="sc"><div class="rxn">'+cap(CLs,'2.8.7 · [Ne]3s^(2)3p^(5)')+' + '+cap(CA,'2.8.8.2 · [Ar]4s^(2)')+' + '+cap(CLs,'2.8.7 · [Ne]3s^(2)3p^(5)')+' → '+cap('Ca^(2+)','2.8.8 · [Ar]')+cap('2'+CLi,'2.8.8 · [Ar]')+'</div></div>'
+ +'<p class="refl">(electronic structures (left side): ½ + electronic transfer: ½ + electronic structures (right side): ½ + formation of ions: ½)</p>'
+ +'<p><b>(f)</b> Yes, it can occur between {19|K} and {8|O}.<br>Because {19|K} is a reactive metal and {8|O} is a reactive non-metal, and also the electronegativity difference between {19|K} and {8|O} is 2.7, i.e., &gt; 1.8.</p>';
+var Q4=[
+['Basic Concepts to Understand Chemical Bonding',[
+[1,sp('(a)','How many orbitals are there in the <i>s</i>, <i>p</i>, and <i>d</i> subshells? What are the shapes of these orbitals?')+sp('(b)','What are the directions of the electron spins in the same orbital of an atom?'),
+ sp('(a)','one <i>s</i> orbital, three <i>p</i> orbitals, and five <i>d</i> orbitals. The <i>s</i> orbital has a spherical shape, the <i>p</i> orbitals are dumbbell-shaped, and <i>d</i> orbitals are double dumbbell-shaped.')+A('(OR) <i>s</i> subshell has only one spherical-shaped orbital. There are three dumbbell-shaped orbitals (<i>p</i>_(x), <i>p</i>_(y), <i>p</i>_(z)) and the five <i>d</i> orbitals have double dumbbell-shaped.')+sp('(b)','opposite direction of the electron spins are in the same orbital of an atom.')],
+[2,'Write the complete electronic configuration and Lewis symbols for {5|B}, {13|Al}, {20|Ca} and {21|Sc}.',
+ '<div class="cfg">{5|B} 1s^(2) 2s^(2) 2p^(1) &nbsp;'+lw('B',1,1,0,1)+'<br>{13|Al} 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(1) &nbsp;'+lw('Al',1,1,0,1)+'<br>{20|Ca} 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(6) 4s^(2) &nbsp;'+lw('Ca',0,1,0,1)+'<br>{21|Sc} 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(6) 4s^(2) 3d^(1) &nbsp;'+lw('Sc',1,1,0,1)+'</div>']]],
+['Valence Electrons and Octet Rule',[
+[3,'Which electrons can take part in chemical bonding?','Valence electrons can take part in chemical bonding.'],
+[4,'Describe the electronic configuration and valence electrons for {36|Kr} and {14|Si}.',
+ '<div class="cfg">{36|Kr} = 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(6) 4s^(2) 3d^(10) 4p^(6)<br>valence electrons of {36|Kr} = 8<br>{14|Si} = 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(2)<br>valence electrons of {14|Si} = 4</div>'],
+[5,'The number of dots in a Lewis electron dot structure is equal to the number of valence electrons or core electrons. Which one is correct? Give a Lewis symbol for {13|Al}.',
+ A('The number of valence electrons is correct.')+A('The Lewis symbol of {13|Al} = '+lw('Al',1,1,0,1))],
+[6,'Give the Lewis symbols for {13|Al}, {15|P}, {16|S}, and {19|K}.',
+ A(lw('Al',1,1,0,1)+', '+lw('P',2,1,1,1)+', '+lw('S',2,1,2,1)+', '+lw('K',1,0,0,0))]]],
+['Electronegativity, Electron Affinity and Ionisation Energy',[
+[7,'Give a Lewis symbol for {19|K} and {35|Br}. Which element has the greater electronegativity? Give a reason for your answer.',
+ A('Lewis symbol for {19|K} is '+lw('K',1,0,0,0)+'.')+A('Lewis symbol for {35|Br} is '+lw('Br',2,1,2,2)+'.')+A('{35|Br} has the greater electronegativity than {19|K}. Because the higher the value of the electronegativity, the greater is the atom’s attraction to electrons.')]]],
+['Type of Chemical Bonding',[
+[8,sp('(a)','What does the type of chemical bonding depend on?')+sp('(b)','Name the forces that can be found in all substances.'),
+ sp('(a)','The type of chemical bonding depend on the types of elements (metals or non-metals).')+sp('(b)','London dispersion forces can be found in all substances.')],
+[9,'Why are the types of chemical bonding and intermolecular forces important?','The types of chemical bonding and intermolecular forces are important because they can affect the structures and physical properties of elements and compounds.'],
+[10,'Classify the types of intermolecular forces.','Hydrogen bonding and van der Waals forces such as ion-dipole interaction, dipole-dipole interaction, and London dispersion forces.']]],
+['Ionic Bonding',[
+[11,'What are the necessary conditions to form an ionic compound between two atoms?',
+ '<ul><li>One atom must have a small ionization energy and the other one must have a large electron affinity.</li><li>The difference in electronegativity between two atoms must be greater than 1.8.</li><li>One atom must be a reactive metal, and another one must be a reactive non-metal.</li></ul>'],
+[12,'What is meant by the term “electrostatic attraction”?','Electrostatic attraction is the attraction between a negatively charged ion and a positively charged ion.'],
+[13,'What is the result of the transfer of electrons from one electron to another?','ionic bonding (electrovalent bonding)'+A('(OR) The result of the transfer of electrons: one electron to another can result in a positive ion (cation) and a negative ion (anion).')],
+[14,sp('(a)','Can ionic bonding occur between {19|K} and {17|Cl}? Give reason for your answer. Illustrate the formation of the compound from these two elements using Lewis symbols of elements. (electronegativities: {17|Cl}=3.0, {19|K}=0.8)')
+ +sp('(b)','Describe the formation of MgO by using Lewis symbols of the elements. What type of bond between two atoms? (electronegativities: {12|Mg}=1.2, {8|O}=3.5)')
+ +alt('Explain the transfer of the electron between magnesium ({12|Mg}) and oxygen ({8|O}) to form magnesium oxide using Lewis symbols.')
+ +sp('(c)','Write the complete electronic configuration for {12|X} and {8|Y}. What type of bond is formed between them? Give reason. Using the Lewis symbols, show how this bond is formed between them. (electronegativities: {12|X}=1.2, {8|Y}=3.5)')
+ +sp('(d)','Describe the formation of magnesium bromide compound using Lewis symbols. ({12|Mg}, {35|Br})')
+ +sp('(e)','Using Lewis structures, show ionic bond formed between the elements, {20|Ca} and {17|Cl}.')
+ +sp('(f)','Can ionic bonding occur between {19|K} and {8|O}? Give reasons for your answer. (electronegativities: {19|K}=0.8, {8|O}=3.5)'),
+ '<p><b>(a)</b> Yes. The ionic bond can occur between {19|K} and {17|Cl}. Because K is a reactive metal and Cl is a reactive non-metal, and also the electro-negativity difference between {19|K} and {17|Cl} is 2.2, i.e., &gt; 1.8.</p>'
+ +'<div class="sc"><div class="rxn">'+cap(lw('K',1,0,0,0),'2.8.8.1 · [Ar]4s^(1)')+' + '+cap(lw('Cl',2,1,2,2),'2.8.7 · [Ne]3s^(2) 3p^(5)')+' → '+cap('K^(+)','2.8.8 · [Ar]<br>potassium ion')+cap(ion(lw('Cl',2,2,2,2),'–'),'2.8.8 · [Ar]<br>chloride ion')+'</div></div>'
+ +A('One electron transferred from K to one Cl atom → potassium chloride, KCl')
+ +'<p><b>(b)</b></p><div class="sc"><div class="rxn">'+cap(lw('Mg',0,2,0,0),'2.8.2 · [Ne]3s^(2)<br>magnesium atom')+' + '+cap(lw('O',2,1,2,1),'2.6 · [He]2s^(2) 2p^(4)<br>oxygen atom')+' → '+cap('Mg^(2+)','2.8 · [Ne]<br>magnesium ion')+cap(ion(lw('O',2,2,2,2),'2–'),'2.8 · [Ne]<br>oxide ion')+'</div></div>'
+ +A('Magnesium oxide, MgO')
+ +'<p><b>(c)</b> Ionic bond is formed. Because {12|X} is a reactive metal and {8|Y} is a reactive non-metal, and also the electronegativity difference between {12|X} and {8|Y} is 2.3, i.e., &gt; 1.8.</p>'
+ +'<div class="sc"><div class="rxn">'+cap(lw('X',0,2,0,0),'2.8.2 · [Ne]3s^(2)')+' + '+cap(lw('Y',2,1,2,1),'2.6 · [He]2s^(2) 2p^(4)')+' → '+cap('X^(2+)','2.8<br>cation')+cap(ion(lw('Y',2,2,2,2),'2–'),'2.8<br>anion')+'</div></div>'
+ +A('Two electrons transferred from X to Y atom → metallic oxide, XY')
+ +D14],
+[15,'How does a sodium ion differ from a neon atom?',null]]],
+['Covalent Bonding',[
+[16,'What would happen when two hydrogen atoms are approaching one another?'+alt('What forces are act on two hydrogen atoms which are approaching one another?'),null],
+[17,'Which of the following pairs can form covalent bonding? Give reasons for your choice.<br>Li and Cl, &nbsp; B and F, &nbsp; S and O, &nbsp; K and O, &nbsp; C and H',null]]],
+['Exception to the Octet Rule',[
+[18,'Which type of molecules can accept an electron pair from a molecule bearing a lone pair electrons? Give two examples for this type of molecules.',null],
+[19,'Mention the electron-deficient molecules and expanded valence shell molecules. (Two from each)',null],
+[20,'How would you draw the Lewis structures for the following molecules?<br>(A) BF_(3) &nbsp; (B) PF_(5) &nbsp; (C) BeCl_(2) &nbsp; (D) SF_(4)<br>Which of these molecules are electron-deficient molecules?',null]]],
+['Formation of Coordinate Bonds (Dative Bonds)',[
+[21,'Give the formation of hydronium ion using the Lewis structure.',null],
+[22,'Draw the Lewis structure of BF_(3) and NH_(3). Identify the chemical bond formed between these molecules. Can these two molecules react? If so, write an equation for it.',null],
+[23,sp('(i)','You are given two molecules: NH_(3) and BF_(3). Can these two molecules react? If so, write a chemical equation for it by using Lewis structure.')+sp('(ii)','How many types of bond are present in product formed from the above chemical equation? What are they?'),null],
+[24,'A compound is formed between {5|X} and {9|Y}. Write the Lewis structure of compound. What type of bond is formed between the above compound and :NH_(3)? Write a chemical equation for it.',null]]],
+['Lewis Structure of Molecules and Polyatomic Ions',[
+[25,'Draw the Lewis structure for the carbonate ion, CO_(3)^(2–), step by step.',null],
+[26,'Draw the Lewis structure of phosphorus(V) fluoride, PF_(5) molecule with explanation.',null]]],
+['VSEPR Model',[
+[27,'Predict the shape of a molecule of CH_(4) in terms of (A) Lewis structure and (B) VSEPR model. What will be the bond angle of H–C–H?',null],
+[28,'Predict the shape of a molecule of H_(2)O in terms of (A) Lewis structure and (B) VSEPR model. (C) What will be the bond angle of H–O–H?',null],
+[29,'You are given two substances: AlF_(3) and AlCl_(3). (Electronegativities: F=4.0, Al=1.5, Cl=3.0)'+sp('(A)','Which one is a covalent molecule?')+sp('(B)','Which one is an ionic compound?'),null],
+[30,'Explain why chlorine forms an ionic compound with sodium but a covalent compound with silicon. (EN: Na=0.9, Cl=3.0, Si=1.9)',null]]],
+['Intermolecular Forces · Polar and Non-polar Molecules',[
+[31,'You are given the covalent bonds; Br–Br and H–Br. (electronegativities: H=2.1, Br=2.8)'+sp('(A)','Which bond is polar?')+sp('(B)','Which bond is non-polar?')+'Give reasons for your answers.',null]]],
+['London Dispersion Force',[
+[32,'Non-polar substances can condense into liquids and can freeze into solids when the temperature is lowered sufficiently. Why?',null]]],
+['van der Waals Forces',[
+[33,'Describe the molecular conditions necessary for the existence of a'+sp('(A)','London dispersion force and')+sp('(B)','hydrogen bonds.'),null]]],
+['Hydrogen Bonding',[
+[34,'What are the necessary condition for the formation of hydrogen bonds between covalent molecules? Draw the intermolecular hydrogen bonds between acetic acid molecules.'+alt('Give requirements for the formation of hydrogen bonds between covalent molecules.'),null]]],
+['Metallic Bonding',[
+[35,'Identify the type of bond existing in each of the following substances: Zn, HF, NaBr and Al. Which of these substances will conduct electricity most effectively? Give a reason for your answer.',null],
+[36,'What does metallic bond strength depend on?',null],
+[37,'Compare the strengths of metallic bonding for potassium and calcium. Give reason for your answer.',null]]]
+];
+
+var Q7=[
+['',[
+[1,'How can a chemical bond form between two atoms?',null]]],
+['Basic Concepts to Understand Chemical Bonding',[
+[2,'State that the fundamental principles of filling electrons in the atomic orbital to explain the electronic configurations of atoms.',null],
+[3,'Write the complete electronic configuration and valence electrons for each of the following elements.<br>(A) {17|Cl} &nbsp; (B) {15|P}',null],
+[4,sp('(a)','Describe the valence electrons and Lewis symbols for the elements, {5|B} and {15|P}.')+sp('(b)','Describe the valence electrons and Lewis symbols for {13|Al} and {15|P}.'),null]]],
+['Type of Chemical Bonding',[
+[5,'What does the type of chemical bonding depend on?',null],
+[6,'Classify the main type of chemical bonding. Among them, which bonding is the strongest?',null],
+[7,'Classify the types of intermolecular forces and arrange their strengths in increasing order.',null]]],
+['Ionic Bonding',[
+[8,'Describe the formation of calcium oxide compound using Lewis symbols.',null],
+[9,'Describe the formation of magnesium fluoride compound using Lewis symbols.',null],
+[10,'Can ionic bonding occur between {20|Ca} and {17|Cl}? Give reasons for your answer. (electronegativities: {17|Cl}=3.0, {20|Ca}=1.0)',null],
+[11,'What type of bond is formed between {13|X} and {9|Y}? Give the Lewis dot structure and the possible formula of compound formed. (electronegativities: X=1.5, Y=4.0)',null],
+[12,sp('(i)','Mg_(3)N_(2) is produced when N_(2) gas is passed over red-hot magnesium metal. Describe the formation of compound using Lewis symbols and Lewis structure. Does the compound have a high or low melting point?')+sp('(ii)','Describe the formation of magnesium nitride, Mg_(3)N_(2) using the Lewis symbols and Lewis structure.'),null],
+[13,'Explain that metals can conduct electricity but solid ionic compounds cannot conduct.',null],
+[14,'What is the name of the three-dimensional pattern that forms when ions bond?',null],
+[15,'Name the types of three cubic unit cells.',null],
+[16,'Briefly discuss the structure of solid sodium chloride.',null],
+[17,'In a sodium chloride crystal lattice, how many chloride ions are surrounding a sodium ion in a unit cell? What are the coordination ratio and formula of sodium chloride?',null],
+[18,'Describe the coordination ratio of NaCl and define the coordination number.',null]]],
+['Covalent Bonding · Formation of Covalent Bonds',[
+[19,'If two hydrogen atoms are approaching one another, three forces act on the atoms at the same time. What are they?',null],
+[20,'Arrange the single, double and triple bonds in increasing order of bond length and bond strength. Give reasons for your answers.',null]]],
+['Formation of Coordinate Bonds (Dative Bonds)',[
+[21,'What type of bond is formed between NH_(3) and H^(+) ion? Draw the Lewis structure for the compound formed.',null],
+[22,'Explain the formation of hydronium ions using the Lewis structure.',null],
+[23,'You are given two covalent molecules: NH_(3) and BF_(3). Identify the chemical bond formed between these two molecules. Write a chemical equation for it.',null],
+[24,'Can the two molecules of NH_(3) and BF_(3) react? If so, write chemical equation for it by using Lewis symbols. Identify the chemical bond formed between these two molecules.'+alt('You are given two covalent molecules: NH_(3) and BF_(3). Illustrate the formation of a chemical bond between these two molecules using Lewis structures, and indicate the type of bond formed. (Given: {1|H}, {5|B}, {7|N}, {9|F})'),null],
+[25,'Draw the Lewis structures and indicate the types of chemical bonding existing in each of the given substances:<br>(A) Na_(2)CO_(3) and &nbsp; (B) NH_(4)Cl',null]]],
+['VSEPR Model',[
+[26,'Arrange the increasing order of repulsive interaction of electron pairs.',null],
+[27,'Under what condition is the molecular shape identical to geometry of electron pairs around the central atom.',null],
+[28,sp('(a)','Draw the Lewis structures and predict the molecular shapes of BeCl_(2), SO_(2) and CF_(4).')+sp('(b)','Draw the Lewis structures of CH_(4). What will be the bond angle of H–C–H?')+sp('(c)','Draw Lewis structures for CO_(3)^(2–) and NH_(4)^(+).'),null],
+[29,'Draw the Lewis structures for NH_(3) and AlCl_(3). Illustrate the formation of a chemical bond and identify the chemical bond formed between these two molecules.',null],
+[30,'Match the molecule with its AX type and geometry of electron pairs for CH_(4) and H_(2)O molecules.',null],
+[31,sp('(i)','Predict the shapes of BF_(3), CCl_(4), and NH_(3) molecules with the explanation.')+sp('(ii)','Predict the shape of NH_(3) molecule with explanation.')+sp('(iii)','Predict the shapes of H_(2)O and NH_(3) molecules with explanation.')+sp('(iv)','Predict the shapes of SiH_(4), NF_(3), and H_(2)S molecules with explanation.'),null],
+[32,sp('(i)','Predict the shape of BF_(3) molecule in terms of (A) Lewis structure and (B) VSEPR model.')+sp('(ii)','Predict the shape of a molecule of SO_(2) in terms of (A) Lewis structure (B) VSEPR model. What will be the bond angle of O–S–O?')+sp('(iii)','Predict the shapes of CH_(4) and SO_(2) molecules in terms of (A) Lewis structure (B) geometry of electron pairs (C) VSEPR model.')+sp('(iv)','Predict the shapes of a molecule of CH_(4) in terms of Lewis structure and the VSEPR model. What will be the bond angle of H–C–H?')+sp('(v)','How do you draw the Lewis structure of the NH_(3) molecule? Predict the geometry shape, and bond angle of H–N–H.')+sp('(vi)','Predict the shape of PCl_(3) molecule in terms of (i) Lewis structure, and (ii) VSEPR model. What will be the bond angle of Cl–P–Cl?')+sp('(vii)','Predict the molecular shape and geometry of electron pairs of SO_(2) and H_(2)O in terms of Lewis structure and VSEPR model. What will be the bond angle of H–O–H in H_(2)O?')+sp('(viii)','Predict the shape of H_(2)O molecule in terms of (i) Lewis structure, and (ii) VSEPR model. What will be the bond angle of H–O–H?')+sp('(ix)','H_(2)S and SiF_(4) have different shapes. Use the VSEPR theory to predict the name of the electron geometry and the molecular shape of each molecule.'),null],
+[33,'You are given two substances: AlF_(3) and AlCl_(3). (electronegativities: F=4.0, Al=1.5, Cl=3.0)'+sp('(A)','Which one is a covalent molecule? Which one is an ionic compound?')+sp('(B)','Refer to VSEPR theory and answer regarding Lewis structure and molecular shape of a covalent molecule.'),null]]],
+['Giant Structures of Covalent Molecules',[
+[34,'Which of graphite and graphene is a giant molecule? Give your comment.',null],
+[35,'Why does graphite have a hexagonal structure?',null],
+[36,'Why can graphite conduct electricity but diamond cannot?',null]]],
+['Intermolecular Forces',[
+[37,'What is meant by the term intermolecular forces? Classify the type of intermolecular forces.',null]]],
+['Polar and Non-polar Molecules',[
+[38,'Is the C–Br bond a polar covalent bond? Explain your answer. (EN: Br=2.8, C=2.5)',null],
+[39,'The molecule of XF_(3) has a dipole moment. Is “X” a boron or phosphorus? Give reason.',null],
+[40,'Why is CO a polar molecule but CO_(2) non-polar?',null],
+[41,'Is CH_(4) a polar or non-polar molecule? Give reason.',null],
+[42,'Draw the Lewis structure and predict the molecular shape of CF_(4). Is it polar or on-polar molecule? Give reason.',null],
+[43,sp('(a)','The water (H_(2)O) molecule has a bent shape, whereas the carbon dioxide (CO_(2)) molecule is linear. Compare the polarity of these two molecules with the appropriate diagrams.')+alt('Compare the polarities of the pair of molecules of the compounds H_(2)O and CO_(2).')+sp('(b)','Compare the polarity of each of the following pairs of molecules.<br>(A) H_(2)O and CO_(2) &nbsp; (B) CCl_(4) and CHCl_(3)'),null],
+[44,'Compare the polarities of CCl_(4) and CHCl_(3) molecules.',null]]],
+['van der Waals Forces',[
+[45,'What are the molecular conditions necessary for the existence of (A) dipole-dipole interaction and (B) London dispersion force?',null],
+[46,sp('(i)','Classify the types of intermolecular forces. Which one of the intermolecular forces exists in the aqueous KI solution? Give reasons.')+sp('(ii)','Which type of van der Waals force is formed when sodium chloride dissolves in water? Explain with a specific diagram.')+sp('(iii)','Identify the chemical bonding between atoms and intermolecular forces existing in the KOH aqueous solution with appropriate diagram.'),null],
+[47,'Identify the chemical bonding between atoms and intermolecular forces existing in the dry ice, CO_(2) with appropriate diagram.',null]]],
+['Hydrogen Bonding',[
+[48,'What are the requirements for the formation of hydrogen bonds between covalent molecules?',null],
+[49,sp('(i)','Sketch the intermolecular hydrogen bonds between (A) Water molecules and (B) Acetic Acid Molecules.')+sp('(ii)','How many hydrogen bonds can carboxylic acid molecules form? Draw a diagram to show this hydrogen bonds.'),null],
+[50,'What are the intermolecular forces present in CO_(2), CH_(3)COOH, N_(2) and HI?',null]]],
+['Metallic Bonding',[
+[51,'How do the metals conduct electricity?'+alt('Explain the metals in a metallic bond can conduct electricity.')+alt('Metals can easily conduct electricity. Why?'),null],
+[52,'Which metal has the higher melting point in the given substances-divalent or trivalent metals? Give a reason for your answer.',null],
+[53,'Can zinc and aluminium conduct electricity most effectively? Give a reason for your answer.',null],
+[54,'Identify the type of bond existing in each of the given substances:<br>Zn, CCl_(4), NaBr, and MgCl_(2)',null],
+[55,'What does the strength of a metallic bond depend on?'+alt('What are the factors that influence the strength of metallic bond?')+alt('How does the strength of metallic bonding increase?')+alt('What are the necessary conditions to increase the strength of metallic bonding?')+alt('What are the factors affecting the strength of metallic bonds?'),null],
+[56,'Compare the strengths of metallic bonding for sodium and magnesium metals. Give reasons for your answer.',null],
+[57,'What are the differences between metallic bonding and ionic bonding?',null]]]
+];
+
+var ANS4={
+15:A('Sodium ion (Na^(+)) differ from a neutral atom of neon (Ne) by carrying its respective ionic charge.')+A('(OR)')+A('Na^(+) is an ion; however, Ne is a neutral atom.'),
+16:THREEF+A('There is an optimum distance between two nuclei called the bond length where net attractive forces are maximised and the most stable covalent bond is formed in the H–H molecule.'),
+17:A('Li and Cl pair and K and O pair can form ionic compounds. Li and K are reactive metals, Cl and O are reactive non-metals. The electronegativity difference in each pair of elements is greater than 1.8.')+A('B and F, S and O, and C and H cannot because the electronegativity difference is less than 1.8.'),
+18:A('Electron-deficient molecules can accept an electron pair from a molecule bearing a lone pair of electrons.')+A('e.g., BeCl_(2), BF_(3), AlCl_(3)'),
+19:A('<b>Electron-deficient molecules:</b> NO, BeCl_(2), BF_(3), BCl_(3), AlCl_(3) (answer any two)')+A('<b>Expanded valence shell molecules:</b> PF_(5), ICl_(3), SF_(6) (answer any two)'),
+20:A('<b>(A)</b> Lewis structure of BF_(3)')+ls(' :F:\n  |\n:F — B — F:')+A('<b>(B)</b> Lewis structure of PF_(5)')+ls('      :F:\n       |\n :F:  |  :F:\n   \\  |  /\n    \\ | /\n     P\n    / \\\n  :F:   :F:')+A('<b>(C)</b> Lewis structure of BeCl_(2)')+ls(':Cl — Be — Cl:')+A('<b>(D)</b> Lewis structure of SF_(4)')+ls(' :F:    :F:\n    \\  /\n     S :\n    /  \\\n :F:    :F:')+A('BF_(3) and BeCl_(2) are electron-deficient molecules.'),
+21:A('The formation of hydronium ion.')+HYD,
+22:A('Lewis structure of NH_(3) and BF_(3):')+ls('    ..\nH — N — H        :F:\n    |             |\n    H       :F — B — F:')+A('Coordinate bond or dative bond is formed between these molecules.')+A('Yes, they can react.')+NBeq,
+23:A('<b>(i)</b> Yes, NH_(3) and BF_(3) molecules can react. The lone pair of electrons on N is donated to B.')+NB+A('<b>(ii)</b> Two types of bond are present in the product formed. They are <b>covalent bond</b> and <b>dative or coordinate bond</b>.'),
+24:A('Formula of compound = X^(3)Y^(1) = XY_(3)')+A('Lewis structure of compound:')+ls(':Y — X — Y:\n    |\n   :Y:')+A('Coordinate bond / dative bond is formed.')+NBeq,
+25:A('Total number of valence electrons = 4 (for C) + 6 (for O) × 3 + 2 electrons (for two negative charge) = 24 electrons')+A('shared electrons = 6 electrons')+A('the remaining unshared electrons = 24 – 6 = 18 electrons, i.e., 9 lone pairs')+ls('Skeleton:   [ O — C — O ]²–  (third O below C)\n\nPlace 2 electrons at the atom to attain stable structure\n\nLewis structure of CO₃²–:\n\n[    :Ö:     ]²–\n[     ‖      ]\n[ :Ö — C — Ö: ]\n(2 single bonds and one double bond)'),
+26:A('Lewis structure of PF_(5), 5 single bonds.')+ls('      :F:\n       |\n :F:  |  :F:\n   \\  |  /\n    \\ | /\n     P\n    / \\\n  :F:   :F:')+ul(['Total number of valence electrons = 5 (for P) + 7 (for F) × 5 = 40','Shared electrons = 10','The remaining unshared electrons = 40 – 10 = 30 electrons, i.e., 15 lone pairs']),
+27:A('<b>(A)</b> Lewis structure of CH_(4) is')+ls('    H\n    |\nH — C — H\n    |\n    H')+A('<b>(B)</b>')+ul(['Four electron pairs are around the central atom C.','Thus, the geometry of the electron pairs is tetrahedral.','So, it has a tetrahedral shape.','The bond angle of H–C–H is 109.5°.']),
+28:A('<b>(A)</b> Lewis structure of H_(2)O is H — Ö — H.')+A('<b>(B)</b> Four electron pairs are around the central atom O.<br>Thus, the geometry of the electron pairs is tetrahedral.<br>There are two lone pairs on the oxygen atom.<br>Because of the electron pair repulsion between this lone pair and the bonding pair, the shape of the molecule is bent (V-shape).')+A('<b>(C)</b> The bond angle of H–O–H will be less than 109.5°.'),
+29:A('<b>(A)</b> AlCl_(3) is a covalent molecule.')+A('<b>(B)</b> AlF_(3) is an ionic compound.'),
+30:A('Chlorine forms an ionic compound with sodium because sodium is a reactive metal, while chlorine is a reactive non-metal and the difference in electronegativity between Na (0.9) and Cl (3.0) is 2.1, i.e., &gt; 1.8.')+A('Chlorine forms a covalent compound with silicon because silicon and chlorine are non-metals and the difference in electronegativity between Si (1.9) and Cl (3.0) is 1.1, i.e., &lt; 1.8.'),
+31:A('<b>(A)</b> H–Br is a polar bond. The electron pair is unequally shared between the H and Br atoms.')+A('<b>(B)</b> Br–Br is a nonpolar bond. The electron pair is equally shared between the Br atoms.'),
+32:A('Due to London dispersion forces, which are weak attractive forces between molecules.'),
+33:A('<b>(A)</b> Non-polar molecules or atoms')+'<p><b>(B)</b></p>'+COND,
+34:A('The formation of hydrogen bonds between covalent molecules requires')+COND+A('Intermolecular hydrogen bonds between acetic acid molecules:')+HB2,
+35:A('Zn and Al – metallic bond &nbsp;·&nbsp; HF – covalent bond &nbsp;·&nbsp; NaBr – ionic bond')+A('Zn and Al are metals so, they will conduct electricity most effectively because of the presence of a sea of delocalized electrons (mobile valence electrons) moving freely throughout the metal lattice.')+A('HF cannot conduct electricity because it is a covalent molecule.')+A('NaBr is an ionic compound and it cannot conduct electricity in solid state.'),
+36:A('Metallic bond strength depends on')+ul(['the increasing positive charge on the ions in the metal lattice,','the decreasing size of metal ions in the lattice, and','the increasing number of mobile electrons (valence electrons) per atom.']),
+37:A('<b>Strength of metallic bonding K &lt; Ca</b>')+A('Because,')+tb([['the increasing positive charge on the ions in the metal lattice','K^(1+) &lt; Ca^(2+)'],['decreasing the size of metal ion in the lattice','K^(1+) &gt; Ca^(2+)'],['the increasing number of mobile electrons (valence electrons)','K^(1+) &lt; Ca^(2+)']])
+};
+var ANS7={
+1:A('A chemical bond can form when atoms are held together by the attractive forces between them after sharing or transferring valence electrons.'),
+2:A('In order to explain the electronic structures of atoms, the principles of filling electrons in the atomic orbitals, such as the <b>Aufbau principle</b>, <b>Pauli’s exclusion principle</b>, and <b>Hund’s rule</b> are fundamental to understand.'),
+3:A('<b>(A)</b> The complete electronic configuration of {17|Cl} = 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(5)<br>valence electrons of {17|Cl} = 7')+A('<b>(B)</b> The complete electronic configuration of {15|P} = 1s^(2) 2s^(2) 2p^(6) 3s^(2) 3p^(3)<br>valence electrons of {15|P} = 5'),
+4:A('<b>(a)</b> Valence electrons for {5|B} is 3. Lewis symbol for {5|B} is '+lw('B',1,1,0,1))+A('Valence electrons for {15|P} is 5. Lewis symbol for {15|P} is '+lw('P',2,1,1,1))+A('<b>(b)</b> Valence electrons for {13|Al} is 3. Lewis symbol for {13|Al} is '+lw('Al',1,1,0,1))+A('Valence electrons for {15|P} is 5. Lewis symbol for {15|P} is '+lw('P',2,1,1,1)),
+5:A('The types of elements (metals or non-metals) that are involved.'),
+6:A('Ionic bonding, covalent bonding, and metallic bonding.<br>Ionic bonding is the strongest.'),
+7:A('Intermolecular forces are classified as <b>hydrogen bonding</b> and <b>van der Waals forces</b> including ion-dipole interaction, dipole-dipole interaction, and London dispersion forces.')+A('Increasing order of strengths –<br>London dispersion forces &lt; dipole-dipole interaction &lt; ion-dipole interaction &lt; hydrogen bonding'),
+8:'<div class="sc"><div class="rxn">'+cap(CA,'2.8.8.2 · [Ar]4s^(2)<br>calcium atom')+' + '+cap(OO,'2.6 · [He]2s^(2) 2p^(4)<br>oxygen atom')+' → '+cap('Ca^(2+)','2.8.8 · [Ar]<br>calcium ion')+cap(ion(lw('O',2,2,2,2),'2–'),'2.8 · [Ne]<br>oxide ion')+'</div></div>'+A('Two electrons transferred from one Ca to one oxygen atom → calcium oxide, CaO'),
+9:'<div class="sc"><div class="rxn">'+cap(FF,'2.7 · [He]2s^(2) 2p^(5)')+' + '+cap(MG,'2.8.2 · [Ne]3s^(2)')+' + '+cap(FF,'2.7 · [He]2s^(2) 2p^(5)')+' → '+cap('Mg^(2+)','2.8 · [Ne]<br>magnesium ion')+cap('2'+Fi,'2.8 · [Ne]<br>fluoride ion')+'</div></div>'+A('Two electrons transferred from one Mg to two F atoms → magnesium fluoride, MgF_(2)'),
+10:A('Yes, ionic bond can occur between {20|Ca} and {17|Cl}.<br>Because {20|Ca} is a <b>reactive metal</b> and {17|Cl} is a <b>reactive non-metal</b>, and also the electronegativity difference between {20|Ca} and {17|Cl} is 2.0, i.e., &gt; 1.8.'),
+11:A('Ionic bond is formed between {13|X} and {9|Y}.')+A('Possible formula = X^(3)Y^(1) = XY_(3)')+'<div class="sc"><div class="rxn">'+cap('X^(3+)','Lewis dot structure')+cap('3'+ion(lw('Y',2,2,2,2),'–'),'')+'</div></div>',
+12:'<p><b>(i)</b></p><div class="sc"><div class="rxn">'+cap(lw('Mg',0,2,0,0),'2.8.2 · [Ne]3s^(2)<br>magnesium atom')+' + '+cap(lw('N',2,1,1,1),'2.5 · [He]2s^(2) 2p^(3)<br>nitrogen atom')+' + '+cap(lw('Mg',0,2,0,0),'')+' + '+cap(lw('N',2,1,1,1),'')+' + '+cap(lw('Mg',0,2,0,0),'')+' → '+cap('3Mg^(2+)','2.8 · [Ne]<br>magnesium ion')+cap('2'+ion(lw('N',2,2,2,2),'3–'),'2.8 · [Ne]<br>nitride ion')+'</div></div>'+A('Magnesium nitride, Mg_(3)N_(2)')+A('It has a high melting point.')+'<p><b>(ii)</b> Same as Question 7, No. 12 (i).</p>',
+13:A('Metals can conduct electricity due to the mobile electrons or sea of electrons, whereas in solid ionic compounds, their ions are held in fixed positions and cannot move, and hence they cannot conduct electricity.'),
+14:A('Crystal lattice'),
+15:A('The cubic unit cell can have three types:<br><b>simple cubic (sc) unit cell, face-centred cubic (fcc) unit cell, and body-centred cubic (bcc) unit cell.</b>'),
+16:A('<b>Structure of solid sodium chloride</b>')+A('Sodium chloride is a white crystalline solid. It has a cubic structure and is formed by repeating the face-centred cubic (fcc) unit cell.')+A('Each Na^(+) ion has six neighbouring Cl^(–) ions, and each Cl^(–) ion has six neighbouring Na^(+) ions.')+A('The coordination ratio of Na^(+) ion to Cl^(–) ion is 6:6, the simple ratio of 1:1 gives the formula unit of sodium chloride which is NaCl.'),
+17:A('Cl^(–) ion has six neighbouring Na^(+) ions.')+A('The coordination ratio of Na^(+) ion to Cl^(–) ion is 6:6.')+A('The formula of sodium chloride is NaCl.'),
+18:A('Coordination ratio of NaCl is 6:6.')+A('<b>Coordination number</b><br>Coordination number is the number of atoms or ions surrounding a central atom in a crystal lattice.'),
+19:THREEF,
+20:A('<b>Increasing order of bond strength:</b> single bond &lt; double bond &lt; triple bond<br><b>Increasing order of bond length:</b> single bond &gt; double bond &gt; triple bond')+A('In single covalent bonds, only one pair of electrons is shared between two atoms.<br>A double covalent bond is formed by sharing two pairs of electrons between two atoms.<br>A triple covalent bond is formed by sharing three pairs of electrons between two atoms.')+A('(OR)')+A('The higher the number of bonded electrons, the stronger the attraction between the two atoms and the shorter the bond length.'),
+21:A('Coordinate bond (Dative bond) is formed between NH_(3) and H^(+) ion.')+ls('[    H     ]⁺      [   H    ]⁺\n[    |     ]  (OR) [ H:N:H  ]\n[ H—N→H  ]         [   :    ]\n[    |     ]        [   H    ]\n[    H     ]'),
+22:HYD,
+23:A('Coordinate bond (Dative bond) formed between NH_(3) and BF_(3).')+NBeq,
+24:A('Yes, the two molecules of NH_(3) and BF_(3) can react.')+NB+A('Coordinate bond (Dative bond) formed between NH_(3) and BF_(3).'),
+25:A('<b>(A)</b> Na_(2)CO_(3)')+ls('       [  :Ö:  ]²–\n2Na⁺   [   ‖   ]\n       [:Ö—C—Ö:]')+ul(['ionic bond between Na^(+) and CO_(3)^(2–) ions.','two single covalent bonds and one double covalent bond in CO_(3)^(2–) ions.'])+A('<b>(B)</b> NH_(4)Cl')+ls('[   H   ]⁺ [ :Cl: ]⁻\n[H—N→H]\n[   H   ]')+ul(['ionic bond between NH_(4)^(+) and Cl^(–) ions.','three covalent bonds and one coordinate bond in NH_(4)^(+) ion.']),
+26:A('The repulsive interaction of electron pairs increases in the order of –<br>bonding pair-bonding pair &lt; lone pair-bonding pair &lt; lone pair-lone pair'),
+27:A('There are no lone pair electrons on the central atom.'),
+28:A('<b>(a)</b> BeCl_(2)')+ls(':Cl — Be — Cl:        180°\n                    linear')+A('SO_(2)')+ls(':Ö = S = Ö:        < 120°\n                    bent / V shaped')+A('CF_(4)')+ls('   :F:\n    |\n:F—C—F:        109.5°\n    |           tetrahedral\n   :F:')+A('<b>(b)</b> Lewis structure of CH_(4) is')+ls('    H\n    |\nH — C — H\n    |\n    H')+A('The bond angle of H–C–H will be 109.5°.')+A('<b>(c)</b> Lewis structure of CO_(3)^(2–) is')+LEW.CO3+A('Lewis structure of NH_(4)^(+) is')+ls('[   H    ]⁺\n[   |    ]\n[H—N→H ]\n[   |    ]\n[   H    ]'),
+29:A('Lewis structure of NH_(3) is')+ls('    ..\nH — N — H\n    |\n    H')+A('Lewis structure of AlCl_(3) is')+ls('   :Cl:\n    |\n:Cl — Al — Cl:')+A('Coordinate bond (or) Dative bond.')+ls('    H     :Cl:\n    |       |\nH — N → Al — Cl:\n    |       |\n    H     :Cl:\n           ↑\n   coordinate bond'),
+30:A('CH_(4): AX_(4) type and tetrahedral geometry of electron pairs.')+A('H_(2)O: AX_(2)E_(2) type (where E represents a lone pair) and <b>tetrahedral</b> geometry of electron pairs'),
+31:'<p><b>(i)</b> BF_(3)</p>'+A('Lewis structure of BF_(3) is')+LEW.BF3+A('It consists of 3 electron pairs around the central atom B.<br>The geometry of electron pairs is triangular planar.<br>So, it has a <b>triangular planar shape</b>. The bond angle of F–B–F is 120°.')
+ +A('CCl_(4)')+ls('   :Cl:\n    |\n:Cl—C—Cl:\n    |\n   :Cl:')+A('It consists of 4 electron pairs around the central atom C.<br>The geometry of electron pairs is tetrahedral.<br>So, it has a <b>tetrahedral shape</b>. The bond angle of Cl–C–Cl is 109.5°.')
+ +A('NH_(3)')+ls('    ..\nH — N — H\n    |\n    H')+A('Four electron pairs are around the central atom N.<br>Thus, the geometry of the electron pairs is tetrahedral.<br>There is a lone pair on the nitrogen atom.<br>Because of the electron pair repulsion between this lone pair and the bonding pair, the shape of the molecule is <b>trigonal pyramidal</b>.<br><b>The bond angle of H–N–H will be less than 109.5°.</b>')
+ +tb([['Number of electron pairs','= 4'],['Geometry of electron pairs','= tetrahedral'],['Number of bonding pairs','= 3'],['Lone pair of electrons','= 1'],['The shape of NH_(3)','= trigonal pyramidal']])
+ +'<p><b>(ii)</b> NH_(3): same as Question 7, No. 31 (i).</p>'
+ +'<p><b>(iii)</b> H_(2)O</p>'+A('Lewis structure of H_(2)O is H — Ö — H.<br>Four electron pairs are around the central atom O.<br>Thus, the geometry of the electron pairs is tetrahedral.<br>There are two lone pairs on the oxygen atom.<br>Because of the electron pair repulsion between this lone pair and the bonding pair, the shape of the molecule is bent (V-shape).<br><b>The bond angle of H–O–H will be less than 109.5°.</b>')
+ +tb([['Number of electron pairs','= 4'],['Geometry of electron pairs','= tetrahedral'],['Number of bonding pairs','= 2'],['Lone pair of electrons','= 2'],['The shape of H_(2)O','= bent or V-shaped']])
+ +'<p>NH_(3): same as Question 7, No. 31 (i).</p>'
+ +'<p><b>(iv)</b> SiH_(4)</p>'+ls('    H\n    |\nH — Si — H\n    |\n    H')+A('It consists of 4 electron pairs around the central atom Si.<br>The geometry of electron pairs is tetrahedral.<br>So, it has a <b>tetrahedral shape</b>. The bond angle of H–Si–H is 109.5°.')
+ +A('NF_(3)')+ls('     ..\n:F — N — F:\n     |\n    :F:')+A('Four electron pairs are around the central atom N.<br>Thus, the geometry of the electron pairs is tetrahedral.<br>There is a lone pair on the nitrogen atom.<br>Because of the electron pair repulsion between this lone pair and the bonding pair, the shape of the molecule is <b>trigonal pyramidal</b>.<br><b>The bond angle of F–N–F will be less than 109.5°.</b>')
+ +A('H_(2)S')+ls('H — S̈ — H')+A('Four electron pairs are around the central atom S.<br>Thus, the geometry of the electron pairs is tetrahedral.<br>There are two lone pairs on the sulphur atom.<br>Because of the electron pair repulsion between this lone pair and the bonding pair, the shape of the molecule is bent (V-shape).<br><b>The bond angle of H–S–H will be less than 109.5°.</b>'),
+32:'<p><b>(i)</b> BF_(3): same as Question 7, No. 31 (i).</p><p><b>(ii)</b> SO_(2)</p>'+A('<b>(A)</b> Lewis structure of SO_(2) is')+ls('   ..\n   S\n  / \\\n:Ö   Ö:\n\ntrigonal planar, V / bent shaped')+A('<b>(B)</b> The geometry of the electron pairs is <b>trigonal planar</b>.')+A('<b>(C)</b> The shape of the molecule is <b>bent / V shaped</b>.<br>The bond angle of O–S–O will be less than 120°.')
+ +'<p><b>(iii)</b> CH_(4): same as Question 4, No. 27.<br>SO_(2): same as Question 7, No. 32 (ii).</p><p><b>(iv)</b> CH_(4): same as Question 4, No. 27.</p><p><b>(v)</b> NH_(3): same as Question 7, No. 31 (i).</p>'
+ +'<p><b>(vi)</b> PCl_(3)</p>'+ls('     ..\n:Cl — P — Cl:\n      |\n     :Cl:')+A('Four electron pairs are around the central atom P.<br>Thus, the geometry of the electron pairs is tetrahedral.<br>There is a lone pair on the phosphorus atom.<br>Because of the electron pair repulsion between this lone pair and the bonding pair, the shape of the molecule is <b>trigonal pyramidal</b>.<br><b>The bond angle of Cl–P–Cl will be less than 109.5°.</b>')
+ +'<p><b>(vii)</b> SO_(2): same as Question 7, No. 32 (ii).<br>H_(2)O: same as Question 7, No. 31 (iii).</p><p><b>(viii)</b> H_(2)O: same as Question 7, No. 31 (iii).</p><p><b>(ix)</b> H_(2)S: same as Question 7, No. 31 (iv).</p>'
+ +A('SiF_(4)')+ls('   :F:\n    |\n:F—Si—F:\n    |\n   :F:')+A('It consists of 4 electron pairs around the central atom Si.<br>The geometry of electron pairs is tetrahedral.<br>So, it has a <b>tetrahedral shape</b>. The bond angle of F–Si–F is 109.5°.'),
+33:A('<b>(A)</b> AlCl_(3) is a covalent molecule. AlF_(3) is an ionic compound.')+A('<b>(B)</b> Lewis structure of AlCl_(3) is')+ls('   :Cl:\n    |\n:Cl — Al — Cl:')+A('Molecular shape of AlCl_(3) = triangular planar (or) trigonal planar'),
+34:ul(['Both graphite and graphene are giant covalent structures (giant molecules).','Graphite is the bulk material consisting of many graphene layers.','Graphene is a single layer of carbon atoms in a hexagonal lattice.','They are held together by weak intermolecular forces between the layers, which give rise to a giant structure.','Both are considered giant structures because their atoms are linked by a continuous network of covalent bonds.']),
+35:ul(['Graphite has a layer and planar structure formed by joining each carbon atom to the other three carbon atoms by covalent bonds.','Each layer is formed with hexagonal rings of carbon atoms.','There are weak van der Waals forces between the layers, which give rise to a giant structure.']),
+36:A('Graphite can conduct electricity because each layer of graphite is formed with hexagonal rings of carbon with weak van der Waals forces and has free moving electrons in each layer. Diamond does not conduct electricity because it has no free-moving electrons.'),
+37:A('Intermolecular forces are the forces between atoms, molecules, and ions when they are placed close to each other.')+A('Molecules in a substance are formed by joining atoms together, and there are attractive and repulsive forces that arise between the molecules. These forces are known as intermolecular forces, which are responsible for most of the physical and chemical properties of matter.')+A('The types of intermolecular forces are hydrogen bonding, and van der Waals forces including ion-dipole interaction, dipole-dipole interaction, London dispersion forces.'),
+38:A('Yes, C–Br is a polar covalent bond.<br>Since the electronegativity difference between Br (2.8) and C (2.5) is 0.3.'),
+39:A('X is phosphorus.')+A('BF_(3) molecule is a trigonal planar structure (symmetrical arrangement) which has no dipole moment.')+A('PF_(3) molecule is a trigonal pyramidal structure because of the lone pair on the central atom. It has a dipole moment.')+tb([['BF_(3)','Total dipole moment is zero.'],['PF_(3)','Total dipole moment is not zero.']]),
+40:tb([['CO','Total dipole moment is not zero. It is a polar molecule.'],['CO_(2)','Total dipole moment is zero. It is a non-polar molecule.']])+A('∴ The dipole moment of CO is not zero and it is a <b>polar molecule</b>.')+A('∴ The dipole moment of CO_(2) is zero and it is a <b>non-polar molecule</b>.'),
+41:A('The dipole moment of CH_(4) is zero, and it is a <b>non-polar molecule</b>.')+A('Total dipole moment is zero. It is a non-polar molecule.'),
+42:A('The Lewis structure of CF_(4) =')+ls('   :F:\n    |\n:F—C—F:\n    |\n   :F:')+A('Molecular shape of CF_(4) = tetrahedral<br>It is a non-polar molecule.')+A('Total dipole moment is zero. It is a non-polar molecule.'),
+43:'<p><b>(a)</b> H_(2)O and CO_(2)</p>'+'<p><b>H_(2)O</b></p>'+ul(['H_(2)O molecule has a bent shape due to the two lone pairs on the O atom.','The O–H bonds are polar.','The bond dipoles do not cancel each other out because of the bent geometry, resulting in a significant net dipole moment, making the molecule polar.'])+A('Total dipole moment is not zero. It is a polar molecule.')+'<p><b>CO_(2)</b></p>'+ul(['CO_(2) molecule is non-polar.','CO_(2) molecule is linear.','The C=O bonds are polar due to the difference in electronegativity between C and O.','The two bond dipoles are in opposite directions and cancel each other out, resulting in a net dipole moment of zero, making the molecule non-polar.'])+A('Total dipole moment is zero. It is a non-polar molecule.')
+ +'<p><b>(b)</b> (A) H_(2)O and CO_(2): same as Question 7, No. 43 (a).<br>(B) CCl_(4) and CHCl_(3)</p>'+tb([['CCl_(4)','Total dipole moment is zero. It is a non-polar molecule.'],['CHCl_(3)','Total dipole moment is not zero. It is a polar molecule.']]),
+44:A('CCl_(4) and CHCl_(3): same as Question 7, No. 43 (b) (B).'),
+45:A('<b>(A)</b> polar molecules')+A('<b>(B)</b> non-polar molecules or atoms'),
+46:'<p><b>(i)</b> Intermolecular forces are <b>hydrogen bonding</b> and <b>van der Waals forces</b> such as ion-dipole interaction, dipole-dipole interaction, and London dispersion forces.</p>'+A('Potassium iodide is an ionic compound, and water is a polar molecule, the <b>ion-dipole interactions</b> are formed between the negative pole O^(δ–) of a water molecule and K^(+) cation and also between the positive pole H^(δ+) of a water molecule and I^(–) anion.')+ls('       δ–\n      :O ········· (K⁺)\n     /  \\\n  δ+H    H δ+ ······ (I⁻)')
+ +'<p><b>(ii)</b> Since sodium chloride is an ionic compound, and water is a polar molecule, the <b>ion-dipole interactions</b> are formed between the negative pole O^(δ–) of a water molecule and Na^(+) cation, and also between the positive pole H^(δ+) of a water molecule and Cl^(–) anion.</p>'+ls('       δ–\n      :O ········· (Na⁺)\n     /  \\\n  δ+H    H δ+ ······ (Cl⁻)')
+ +'<p><b>(iii)</b></p>'+ul(['ionic bond in KOH','two single covalent bonds in H_(2)O','ion-dipole interactions between KOH and H_(2)O'])+ls('(K⁺) ········· :O δ–\n                /  \\\n(OH⁻) ······· H δ+   H δ+'),
+47:ul(['two double covalent bonds','London dispersion force'])+ls('δ–   δ+   δ–\n:Ö = C = Ö:   ········   O = C = O\n(London dispersion force between CO₂ molecules)'),
+48:A('The formation of hydrogen bonds between covalent molecules requires:')+COND,
+49:A('<b>(i)</b> <b>(A)</b> Intermolecular hydrogen bond between water molecules')+ls('  δ+H   H δ+\n      \\ /\n  δ– :O ········ H δ+\n       ·       \\\n       ·        O δ–\n  (intermolecular hydrogen bond shown as dotted lines)')+A('<b>(B)</b> Intermolecular hydrogen bond between acetic acid molecules')+HB2+A('<b>(ii)</b> Two hydrogen bonds can carboxylic acid molecules form.')+HB2,
+50:tb([['CO_(2)','London dispersion force'],['CH_(3)COOH','Hydrogen bonding, dipole-dipole interaction, and London dispersion force'],['N_(2)','London dispersion force'],['HI','Dipole-dipole interaction and London dispersion force']]),
+51:ul(['In a metallic bond, the valence electrons of the atoms are very loosely held, forming a common electron cloud.','These valence electrons move freely within this electron cloud.','These mobile electrons make the metals easily conduct electricity.']),
+52:A('<b>Trivalent metal has a higher melting point than divalent metal.</b>')+tb([['positive charge on the ions','trivalent metal &gt; divalent metal'],['size of ion in the lattice','trivalent metal &lt; divalent metal'],['number of mobile electrons per atom','trivalent metal &gt; divalent metal'],['strength of metallic bonding','trivalent metal &gt; divalent metal'],['melting point','trivalent metal &gt; divalent metal']]),
+53:A('Zn and Al are metals so, they will conduct electricity most effectively because of the presence of a sea of delocalized electrons (mobile valence electrons) moving freely throughout the metal lattice.'),
+54:tb([['Zn','metallic bond'],['CCl_(4)','covalent bond'],['NaBr','ionic bond'],['MgCl_(2)','ionic bond']]),
+55:A('The strength of metallic bonding increases with')+ul(['the increasing positive charge on the ions in the metal lattice,','the decreasing size of metal ions in the lattice, and','the increasing number of mobile electrons (valence electrons) per atom.']),
+56:A('<b>Strength of the metallic bond of Mg &gt; that of Na</b>')+tb([['the increasing positive charge on the ions','Mg^(2+) &gt; Na^(+)'],['the decreasing size of metal ions','Mg^(2+) &lt; Na^(+)'],['the increasing number of mobile electrons per atom','Mg^(2+) &gt; Na^(+)']]),
+57:A('In a metallic bond, <b>the atoms do not share or transfer electrons to bond together.</b> The structure of a metallic bond is quite different from that of covalent or ionic bonds.')+A('Ionic bonding (electrovalent bonding) results from <b>the transfer of electrons from one atom having small ionisation energy to another atom having a large electron affinity</b>, and the electrostatic attractions between cations (positively charged ions) and anions (negatively charged ions) are formed.')
+};
+[[Q4,ANS4],[Q7,ANS7]].forEach(function(p){p[0].forEach(function(g){g[1].forEach(function(it){if(it[2]==null&&p[1][it[0]]!=null)it[2]=p[1][it[0]];});});});
+
+var SECS=[
+ {id:'tf',label:'True / False',head:'Q1 · Write TRUE or FALSE for each of the following statements.',marks:'10 marks',kind:'tf',data:TF,note:null},
+ {id:'fb',label:'Fill in the blanks',head:'Q2 · Fill in the blanks with the correct word(s), notation(s), term(s), unit(s), etc., as necessary.',marks:'10 marks',kind:'fb',data:FB,note:null},
+ {id:'mc',label:'MCQ',head:'Q3 · Choose the best answer for each question given in the following.',marks:'10 marks',kind:'mc',data:MC,note:null},
+ {id:'q4',label:'Section B · Q4',head:'Section (B) · Q4 · Answer All questions.',marks:'25 marks',kind:'long',data:Q4,note:null},
+ {id:'q7',label:'Q7',head:'Q7 · Answer All questions.',marks:'15 marks',kind:'long',data:Q7,note:null}
+];
+
+var CHAPTERS=[
+ ['1','Ch','Chemical Bonding and Intermolecular Forces',true],
+ ['2','En','Energy Changes in Chemical Reactions',false],
+ ['3','Ki','Chemical Kinetics: Rates of Reaction',false],
+ ['4','Eq','Chemical Equilibrium',false],
+ ['5','Ab','Acid-Base Reactions',false],
+ ['6','Tr','Transition Elements',false],
+ ['7','Gr','Chemistry and Green Environment',false],
+ ['8','Or','Organic Compounds and Macromolecules',false]
+];
+
+/* ---------- state ---------- */
+var TAGS={"tf-1":["2025 · Domestic 6"],"tf-2":["2024 · Domestic 6"],"tf-3":["2024 · Domestic 4"],"tf-4":["2026 · Domestic 1"],"tf-5":["2026 · Foreign"],"tf-6":["2025 · Domestic 1"],"tf-7":["2025 · Domestic 11"],"tf-8":["2024 · Domestic 1"],"tf-9":["2024 · Foreign"],"tf-10":["2025 · Domestic 9"],"tf-11":["2025 · Domestic 7"],"tf-12":["2024 · Domestic 2"],"tf-13":["2025 · Domestic 10"],"tf-14":["2024 · Domestic 5"],"tf-15":["2025 · Domestic 4"],"tf-16":["2025 · Domestic 5"],"tf-17":["2025 · Domestic 8"],"tf-18":["2025 · Domestic 11"],"tf-19":["2025 · Domestic 2"],"tf-20":["2025 · Foreign"],"tf-21":["2024 · Domestic 3"],"tf-22":["2025 · Domestic 8"],"tf-23":["2025 · Domestic 12"],"tf-24":["2025 · Domestic 9"],"tf-25":["2025 · Domestic 3"],"tf-26":["2024 · Domestic 4"],"tf-27":["2026 · Domestic 2"],"tf-28":["2025 · Domestic 2"],"tf-29":["2025 · Domestic 6, 7"],"tf-30":["2025 · Domestic 1"],"tf-31":["2024 · Foreign"],"tf-32":["2025 · Foreign"],"tf-33":["2024 · Domestic 3"],"tf-34":["2025 · Domestic 4"],"tf-35":["2025 · Domestic 10"],"tf-36":["2025 · Domestic 12"],"fb-1":["2025 · Domestic 12"],"fb-2":["2024 · Domestic 5"],"fb-3":["2025 · Domestic 8"],"fb-4":["2025 · Domestic 3"],"fb-5":["2026 · Domestic 2"],"fb-6":["2025 · Domestic 6"],"fb-7":["2024 · Sample"],"fb-8":["2026 · Foreign"],"fb-9":["2025 · Domestic 3"],"fb-10":["2025 · Domestic 5"],"fb-11":["2024 · Domestic 2"],"fb-12":["2024 · Domestic 1"],"fb-13":["2024 · Domestic 4"],"fb-14":["2024 · Foreign"],"fb-15":["2024 · Domestic 6"],"fb-16":["2026 · Domestic 1"],"fb-17":["2025 · Domestic 7"],"fb-18":["2026 · Domestic 2"],"fb-19":["2025 · Foreign"],"fb-20":["2025 · Domestic 2"],"fb-21":["2025 · Domestic 4"],"fb-22":["2024 · Domestic 2"],"fb-23":["2025 · Domestic 5"],"fb-24":["2025 · Domestic 9"],"fb-25":["2025 · Domestic 1"],"fb-26":["2024 · Domestic 3"],"fb-27":["2025 · Domestic 11"],"fb-28":["2026 · Domestic 1"],"fb-29":["2024 · Domestic 1"],"fb-30":["2025 · Domestic 10"],"fb-31":["2024 · Domestic 6"],"mc-1":["2025 · Domestic 7"],"mc-2":["2025 · Domestic 1"],"mc-3":["2025 · Foreign"],"mc-4":["2026 · Domestic 2"],"mc-5":["2025 · Domestic 4"],"mc-6":["2025 · Domestic 6"],"mc-7":["2024 · Domestic 1"],"mc-8":["2024 · Domestic 4"],"mc-9":["2024 · Domestic 5"],"mc-10":["2024 · Domestic 5"],"mc-11":["2024 · Sample"],"mc-12":["2025 · Domestic 3"],"mc-13":["2025 · Domestic 9"],"mc-14":["2025 · Domestic 10"],"mc-15":["2025 · Domestic 1"],"mc-16":["2024 · Domestic 3"],"mc-17":["2026 · Foreign"],"mc-18":["2025 · Domestic 12"],"mc-19":["2025 · Domestic 11"],"mc-20":["2025 · Domestic 5"],"mc-21":["2026 · Domestic 1"],"mc-22":["2026 · Foreign"],"mc-23":["2025 · Domestic 2"],"mc-24":["2024 · Domestic 2"],"mc-25":["2025 · Domestic 8"],"mc-26":["2024 · Domestic 6"],"mc-27":["2024 · Foreign"],"q4-1":["2024 · Domestic 1, 3, 4","2026 · Domestic 1","2026 · Foreign","2024 · Foreign","2025 · Domestic 5"],"q4-2":["2024 · Domestic 4"],"q4-3":["2025 · Domestic 7"],"q4-4":["2025 · Domestic 12"],"q4-5":["2026 · Domestic 2"],"q4-6":["2025 · Domestic 3"],"q4-7":["2025 · Domestic 2"],"q4-8":["2025 · Domestic 1"],"q4-9":["2025 · Domestic 7"],"q4-10":["2025 · Domestic 10"],"q4-11":["2024 · Domestic 2","2025 · Domestic 5"],"q4-12":["2025 · Domestic 3"],"q4-13":["2024 · Domestic 1"],"q4-14":["2024 · Domestic 2, 6","2024 · Foreign","2026 · Foreign","2024 · Domestic 1","2024 · Domestic 5","2025 · Domestic 6","2026 · Domestic 1","2025 · Domestic 2"],"q4-15":["2025 · Domestic 11"],"q4-16":["2024 · Domestic 6","2025 · Domestic 7"],"q4-17":["2024 · Sample"],"q4-18":["2025 · Domestic 1"],"q4-19":["2025 · Domestic 4"],"q4-20":["2025 · Domestic 8"],"q4-21":["2025 · Domestic 5"],"q4-22":["2025 · Domestic 4"],"q4-23":["2025 · Foreign"],"q4-24":["2025 · Domestic 9"],"q4-25":["2025 · Domestic 11"],"q4-26":["2024 · Foreign"],"q4-27":["2024 · Domestic 2"],"q4-28":["2025 · Domestic 10"],"q4-29":["2024 · Domestic 3"],"q4-30":["2025 · Domestic 3"],"q4-31":["2025 · Domestic 8"],"q4-32":["2025 · Domestic 11"],"q4-33":["2025 · Domestic 12"],"q4-34":["2026 · Domestic 1","2025 · Domestic 9"],"q4-35":["2025 · Domestic 6"],"q4-36":["2026 · Domestic 2"],"q4-37":["2024 · Domestic 5"],"q7-1":["2025 · Domestic 12"],"q7-2":["2024 · Foreign"],"q7-3":["2025 · Domestic 10"],"q7-4":["2024 · Domestic 2","2024 · Domestic 6"],"q7-5":["2025 · Domestic 11"],"q7-6":["2025 · Domestic 8"],"q7-7":["2024 · Domestic 1, 4, 6"],"q7-8":["2025 · Domestic 8"],"q7-9":["2024 · Domestic 4"],"q7-10":["2025 · Domestic 12"],"q7-11":["2025 · Foreign"],"q7-12":["2024 · Foreign","2025 · Domestic 10"],"q7-13":["2024 · Domestic 4"],"q7-14":["2026 · Domestic 2"],"q7-15":["2024 · Domestic 3"],"q7-16":["2025 · Domestic 6"],"q7-17":["2026 · Foreign"],"q7-18":["2025 · Foreign"],"q7-19":["2025 · Domestic 2"],"q7-20":["2024 · Foreign","2025 · Domestic 3"],"q7-21":["2025 · Domestic 12"],"q7-22":["2024 · Domestic 5"],"q7-23":["2025 · Domestic 10"],"q7-24":["2026 · Domestic 1","2026 · Foreign"],"q7-25":["2025 · Domestic 5"],"q7-26":["2025 · Domestic 4, 9"],"q7-27":["2025 · Domestic 9"],"q7-28":["2024 · Domestic 1","2024 · Domestic 4","2024 · Sample"],"q7-29":["2024 · Domestic 2"],"q7-30":["2026 · Domestic 2"],"q7-31":["2024 · Sample","2025 · Domestic 6","2025 · Domestic 8","2025 · Domestic 5"],"q7-32":["2024 · Domestic 3","2026 · Domestic 1","2024 · Domestic 6","2024 · Domestic 5","2024 · Domestic 5","2025 · Domestic 7","2025 · Domestic 4","2025 · Domestic 1","2025 · Domestic 3"],"q7-33":["2025 · Domestic 3"],"q7-34":["2026 · Domestic 2"],"q7-35":["2025 · Domestic 1"],"q7-36":["2025 · Domestic 7"],"q7-37":["2025 · Domestic 6"],"q7-38":["2025 · Domestic 3"],"q7-39":["2025 · Domestic 1"],"q7-40":["2025 · Domestic 5"],"q7-41":["2025 · Domestic 7"],"q7-42":["2025 · Domestic 11"],"q7-43":["2026 · Foreign","2024 · Domestic 1, 2","2024 · Domestic 3"],"q7-44":["2025 · Domestic 6"],"q7-45":["2024 · Foreign"],"q7-46":["2024 · Domestic 5","2025 · Domestic 9","2025 · Domestic 2"],"q7-47":["2025 · Foreign"],"q7-48":["2025 · Domestic 1"],"q7-49":["2025 · Domestic 2","2025 · Domestic 11"],"q7-50":["2025 · Domestic 4"],"q7-51":["2025 · Domestic 4","2026 · Domestic 1","2026 · Foreign"],"q7-52":["2025 · Domestic 2"],"q7-53":["2024 · Domestic 6"],"q7-54":["2025 · Domestic 5"],"q7-55":["2024 · Domestic 3","2025 · Domestic 7","2025 · Domestic 9","2025 · Domestic 10","2025 · Domestic 12"],"q7-56":["2025 · Domestic 8, 11"],"q7-57":["2024 · Domestic 1"]};
+var state={view:'home',sec:'tf',pick:{},shown:{},checked:{}};
+var $app=document.getElementById('app');
+function secById(id){for(var i=0;i<SECS.length;i++)if(SECS[i].id===id)return SECS[i];}
+function count(s){var c=0;s.data.forEach(function(g){c+=g[1].length;});return c;}
+function ids(s){var a=[];s.data.forEach(function(g){g[1].forEach(function(it){a.push(s.id+'-'+it[0]);});});return a;}
+function findItem(s,id){var n=+id.split('-')[1],r=null;s.data.forEach(function(g){g[1].forEach(function(it){if(it[0]===n)r=it;});});return r;}
+var LET=['A','B','C','D'];
+function tagsHTML(id){
+  var t=TAGS[id];if(!t||!t.length)return '';
+  return '<span class="tags">'+t.map(function(x){var y=x.slice(0,4);return '<span class="tag y'+y.slice(2)+'">'+x+'</span>';}).join('')+'</span>';
+}
+function btnShow(id,shown){return '<button class="showbtn'+(shown?' hide':'')+'" data-act="show" data-id="'+id+'">'+(shown?'🙈 Hide Answer':'👁 Show Answer')+'</button>';}
+function itemHTML(s,it){
+  var id=s.id+'-'+it[0],shown=!!state.shown[id],p=state.pick[id],chk=!!state.checked[s.id],h='';
+  var head='<div class="qrow"><span class="qn">('+it[0]+')</span><div class="qtxt">'+fmt(it[1])+tagsHTML(id)+'</div></div>';
+  if(s.kind==='tf'){
+    h=head+'<div class="tfrow">';
+    ['T','F'].forEach(function(v){
+      var c='tf';
+      if((shown||chk)&&p===v&&v!==it[2])c+=' wrong';
+      if((shown||(chk&&p))&&v===it[2])c+=' right';
+      h+='<button class="'+c+'" data-act="pick" data-id="'+id+'" data-v="'+v+'" aria-pressed="'+(p===v)+'">'+(v==='T'?'TRUE':'FALSE')+'</button>';
+    });
+    h+='</div>';
+    if(shown)h+='<div class="ans big">Answer: '+(it[2]==='T'?'TRUE':'FALSE')+'</div>';
+  }else if(s.kind==='fb'){
+    h=head;
+    if(shown)h+='<div class="ans big">Answer: '+fmt(it[2])+'</div>';
+  }else if(s.kind==='mc'){
+    h=head+'<div class="opts">';
+    it[2].forEach(function(o,i){
+      var L=LET[i],c='opt';
+      if((shown||chk)&&p===L&&L!==it[3])c+=' wrong';
+      if((shown||(chk&&p))&&L===it[3])c+=' right';
+      h+='<button class="'+c+'" data-act="pick" data-id="'+id+'" data-v="'+L+'" aria-pressed="'+(p===L)+'"><span class="l">'+L+'.</span><span>'+fmt(o)+'</span></button>';
+    });
+    h+='</div>';
+    if(shown)h+='<div class="ans big">Answer: '+it[3]+'. '+fmt(it[2][LET.indexOf(it[3])])+'</div>';
+  }else{
+    h=head;
+    if(shown)h+=it[2]?'<div class="ans"><span class="lab">Answer</span>'+fmt(it[2])+'</div>':'<div class="ans none">Answer not added yet.</div>';
+  }
+  h+=btnShow(id,shown);
+  return '<div class="card" id="it-'+id+'">'+h+'</div>';
+}
+function scoreHTML(s){
+  if(!state.checked[s.id]||(s.kind!=='tf'&&s.kind!=='mc'))return '';
+  var ok=0,done=0,tot=0;
+  s.data.forEach(function(g){g[1].forEach(function(it){tot++;var p=state.pick[s.id+'-'+it[0]];if(p){done++;if(p===(s.kind==='tf'?it[2]:it[3]))ok++;}});});
+  return '<div class="banner score">Score: '+ok+' / '+tot+' correct · '+(tot-done)+' not answered</div>';
+}
+function listHTML(s){
+  var h=scoreHTML(s);
+  if(s.note)h+='<div class="banner info">'+s.note+'</div>';
+  s.data.forEach(function(g){
+    if(g[0])h+='<div class="topic">'+fmt(g[0])+'</div>';
+    g[1].forEach(function(it){h+=itemHTML(s,it);});
+  });
+  return h;
+}
+function home(){
+  var h='<div class="hdr"><div class="hdr-in"><div class="ttl"><h1>Grade 12 Chemistry</h1><p class="sub1">MCK Education Center · Old exam questions</p></div></div></div><div class="page">';
+  CHAPTERS.forEach(function(c){
+    h+=c[3]?'<button class="chap on" data-act="open"><span class="k">Chapter '+c[0]+'</span><div class="t">'+c[2]+'</div></button>'
+            :'<div class="chap off"><span class="k">Chapter '+c[0]+' · coming soon</span><div class="t">'+c[2]+'</div></div>';
+  });
+  h+='</div>';
+  $app.innerHTML=h;
+}
+function chapter(){
+  var s=secById(state.sec);
+  var h='<div class="hdr"><div class="hdr-in"><button class="hbtn" data-act="home">← Back</button><div class="ttl"><h1>Chapter 1 — Chemical Bonding and Intermolecular Forces</h1><p class="sub1">Grade 12 Chemistry</p></div></div></div><div class="page"><div class="tabs" role="group" aria-label="Sections">';
+  SECS.forEach(function(x){h+='<button class="tab" data-act="sec" data-id="'+x.id+'" aria-pressed="'+(x.id===state.sec)+'">'+x.label+'</button>';});
+  h+='</div><div class="bar"><div class="cnt">'+count(s)+' questions<small>'+s.marks+'</small></div>'+((s.kind==='tf'||s.kind==='mc')?'<button class="btn orange" data-act="check">Check Answers</button>':'')+'</div>';
+  h+='<div class="row"><button class="btn blue grow" data-act="all">👁 Show All Answers</button><button class="btn grey" data-act="reset">Reset</button></div>';
+  h+='<div id="secbody">'+listHTML(s)+'</div></div><div class="fab"><button data-act="up" aria-label="Go to top">▲</button><button data-act="down" aria-label="Go to bottom">▼</button></div>';
+  $app.innerHTML=h;
+}
+function render(){state.view==='home'?home():chapter();}
+function refreshList(){document.getElementById('secbody').innerHTML=listHTML(secById(state.sec));}
+function hop(dir){
+  var max=Math.max(document.documentElement.scrollHeight,document.body.scrollHeight);
+  window.scrollTo({top:dir>0?Math.max(0,max-window.innerHeight):0,behavior:'smooth'});
+}
+$app.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var act=b.getAttribute('data-act'),id=b.getAttribute('data-id'),s=secById(state.sec);
+  if(act==='open'){state.view='ch';render();window.scrollTo(0,0);}
+  else if(act==='home'){state.view='home';render();window.scrollTo(0,0);}
+  else if(act==='sec'){state.sec=id;chapter();window.scrollTo(0,0);}
+  else if(act==='all'){ids(s).forEach(function(i){state.shown[i]=true;});refreshList();}
+  else if(act==='reset'){ids(s).forEach(function(i){delete state.shown[i];delete state.pick[i];});delete state.checked[s.id];refreshList();}
+  else if(act==='check'){state.checked[s.id]=true;refreshList();}
+  else if(act==='up'){hop(-1);}
+  else if(act==='down'){hop(1);}
+  else if(act==='pick'||act==='show'){
+    var sid=id.split('-')[0],s2=secById(sid),it=findItem(s2,id);
+    if(act==='pick')state.pick[id]=(state.pick[id]===b.getAttribute('data-v'))?undefined:b.getAttribute('data-v');
+    else state.shown[id]=!state.shown[id];
+    document.getElementById('it-'+id).outerHTML=itemHTML(s2,it);
+  }
+});
+render();
+</script>
